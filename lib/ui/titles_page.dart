@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/title_bloc.dart';
 import '../bloc/title_event.dart';
-import '../data/page_number.dart';
+
+int currentPageNum = 1;
 
 class TitlesScreen extends StatefulWidget {
   const TitlesScreen({super.key});
