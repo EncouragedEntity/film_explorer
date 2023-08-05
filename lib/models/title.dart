@@ -2,54 +2,65 @@ import 'package:intl/intl.dart';
 
 class Title {
   final String id;
-  final String primaryImageId;
-  final int imageWidth;
-  final int imageHeight;
-  final String imageUrl;
-  final String imageCaption;
+  final String? primaryImageURL;
   final String titleType;
   final String titleText;
   final String originalTitleText;
   final int releaseYear;
-  final int releaseDay;
-  final int releaseMonth;
-  final int releaseYearRangeEnd;
+  final int? releaseDateDay;
+  final int? releaseDateMonth;
+  final int? releaseDateYear;
 
-  DateTime get releaseDate => DateTime(releaseYear, releaseMonth, releaseDay);
+  DateTime get releaseDate {
+    if(releaseDateMonth == null || releaseDateDay == null)
+    {
+      return DateTime(releaseYear);
+    }
+    return DateTime(releaseYear, releaseDateMonth!, releaseDateDay!);
+  }
   String get formattedReleaseDate => DateFormat.yMd().format(releaseDate);
 
   Title({
     required this.id,
-    required this.primaryImageId,
-    required this.imageWidth,
-    required this.imageHeight,
-    required this.imageUrl,
-    required this.imageCaption,
+    required this.primaryImageURL,
     required this.titleType,
     required this.titleText,
     required this.originalTitleText,
     required this.releaseYear,
-    required this.releaseDay,
-    required this.releaseMonth,
-    required this.releaseYearRangeEnd,
+    this.releaseDateDay,
+    this.releaseDateMonth,
+    this.releaseDateYear,
   });
 
   factory Title.fromJson(Map<String, dynamic> json) {
-    final releaseYearRange = json['releaseYear']['yearRange'];
-    return Title(
-      id: json['id'],
-      primaryImageId: json['primaryImage']['id'],
-      imageWidth: json['primaryImage']['width'],
-      imageHeight: json['primaryImage']['height'],
-      imageUrl: json['primaryImage']['url'],
-      imageCaption: json['primaryImage']['caption']['plainText'],
-      titleType: json['titleType']['text'],
-      titleText: json['titleText']['text'],
-      originalTitleText: json['originalTitleText']['text'],
-      releaseYear: json['releaseYear']['year'],
-      releaseDay: json['releaseDate']['day'],
-      releaseMonth: json['releaseDate']['month'],
-      releaseYearRangeEnd: releaseYearRange != null ? releaseYearRange['endYear'] : null,
-    );
+    final results = json['results'] as Map<String, dynamic>?;
+
+    if (results != null) {
+      final primaryImage = results['primaryImage'] as Map<String, dynamic>?;
+
+      return Title(
+        id: results['id'],
+        primaryImageURL: primaryImage?['url'] ?? '',
+        titleType: results['titleType']['text'],
+        titleText: results['titleText']['text'],
+        originalTitleText: results['originalTitleText']['text'],
+        releaseYear: results['releaseYear']['year'],
+        releaseDateDay: results['releaseDate']?['day'],
+        releaseDateMonth: results['releaseDate']?['month'],
+        releaseDateYear: results['releaseDate']?['year'],
+      );
+    } else {
+      return Title(
+        id: json['_id'],
+        primaryImageURL: json['primaryImage']?['url'],
+        titleType: json['titleType']['text'],
+        titleText: json['titleText']['text'],
+        originalTitleText: json['originalTitleText']['text'],
+        releaseYear: json['releaseYear']['year'],
+        releaseDateDay: json['releaseDate']?['day'],
+        releaseDateMonth: json['releaseDate']?['month'],
+        releaseDateYear: json['releaseYear']?['year'],
+      );
+    }
   }
 }
