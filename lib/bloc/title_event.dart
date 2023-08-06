@@ -12,6 +12,7 @@ class FetchTitlesEvent extends TitleEvent {
     this.endYear,
     this.titleType,
     this.limit,
+    this.info,
   });
   final int? pageNumber;
   final String? sort;
@@ -21,34 +22,36 @@ class FetchTitlesEvent extends TitleEvent {
   final int? endYear;
   final String? titleType;
   final int? limit;
+  final String? info;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        pageNumber,
+        sort,
+        year,
+        genre,
+        startYear,
+        endYear,
+        titleType,
+        limit,
+        info,
+      ];
 }
 
-class NextPageEvent extends TitleEvent
-{
-  NextPageEvent(this.pageNum);
-
-  final int pageNum;
-  @override
-  List<Object?> get props => [];
-}
-
-class PreviousPageEvent extends TitleEvent
-{
-  PreviousPageEvent(this.pageNum);
-
-  final int pageNum;
-  @override
-  List<Object?> get props => [];
-}
-
-class GotoPageEvent extends TitleEvent
-{
+class GotoPageEvent extends TitleEvent {
   final int pageNumber;
 
   GotoPageEvent(this.pageNumber);
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [pageNumber];
+}
+
+class ShowDetailsEvent extends TitleEvent {
+  final String titleId;
+  final String? info;
+  final int titlePageNumber;
+
+  ShowDetailsEvent({required this.titleId, required this.titlePageNumber, this.info});
+  @override
+  List<Object?> get props => [titleId, info, titlePageNumber];
 }

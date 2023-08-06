@@ -29,8 +29,9 @@ class TitleErrorFetchDataState extends TitleState {
   });
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [errorMessage];
 }
+
 class TitleSuccessFetchDataState extends TitleState {
   final List<Title> titles;
   const TitleSuccessFetchDataState({
@@ -39,4 +40,13 @@ class TitleSuccessFetchDataState extends TitleState {
 
   @override
   List<Object?> get props => titles;
+}
+
+class TitleDetailsSuccessFetchState extends TitleState
+{
+  final Title title;
+
+  const TitleDetailsSuccessFetchState({required this.title});
+  @override
+  List<Object?> get props => [title];
 }

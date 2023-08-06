@@ -8,9 +8,22 @@ class TitleBloc extends Bloc<TitleEvent, TitleState> {
 
   TitleBloc() : super(const TitleLoadingState()) {
     on<FetchTitlesEvent>(_onFetchDataEvent);
-    on<PreviousPageEvent>(_onPreviousPageEvent);
-    on<NextPageEvent>(_onNextPageEvent);
     on<GotoPageEvent>(_onGotoPageEvent);
+    on<ShowDetailsEvent>(_onShowDetailsEvent);
+  }
+
+  Future<void> _onShowDetailsEvent(
+    ShowDetailsEvent event,
+    Emitter<TitleState> emitter,
+  ) async {
+    emitter(const TitleLoadingState());
+    try {
+      final title = await movieAPI.fetchTitleById(id: event.titleId);
+      title.pageNumber = event.titlePageNumber;
+      emitter(TitleDetailsSuccessFetchState(title: title));
+    } on Exception catch (error) {
+       emitter(TitleErrorFetchDataState(errorMessage: error.toString()));
+    }
   }
 
   Future<void> _onGotoPageEvent(
@@ -20,23 +33,6 @@ class TitleBloc extends Bloc<TitleEvent, TitleState> {
     emitter(const TitleLoadingState());
     await _onFetchDataEvent(
         FetchTitlesEvent(pageNumber: event.pageNumber), emitter);
-  }
-
-  Future<void> _onNextPageEvent(
-    NextPageEvent event,
-    Emitter<TitleState> emitter,
-  ) async {
-    await _onFetchDataEvent(
-        FetchTitlesEvent(pageNumber: event.pageNum), emitter);
-  }
-
-  Future<void> _onPreviousPageEvent(
-    PreviousPageEvent event,
-    Emitter<TitleState> emitter,
-  ) async {
-    emitter(const TitleLoadingState());
-    await _onFetchDataEvent(
-        FetchTitlesEvent(pageNumber: event.pageNum), emitter);
   }
 
   Future<void> _onFetchDataEvent(
@@ -54,6 +50,7 @@ class TitleBloc extends Bloc<TitleEvent, TitleState> {
         genre: event.genre,
         titleType: event.titleType,
         limit: event.limit,
+        info: event.info,
       );
       emitter(TitleSuccessFetchDataState(titles: titles));
     } on Exception catch (error) {
