@@ -10,6 +10,10 @@ class MovieAPI {
   };
 
   String _addArgumentToUrl(String url, String arg, dynamic value) {
+    if (arg == 'year' && value == null) {
+      value = DateTime.now().year;
+    }
+
     if (value != null) {
       final separator = url.contains('?') ? '&' : '?';
       return '$url$separator$arg=$value';
@@ -26,6 +30,7 @@ class MovieAPI {
     int? endYear,
     String? titleType,
     int? limit,
+    String? info = 'base_info',
   }) async {
     String url = '$baseUrl/titles';
 
@@ -37,6 +42,7 @@ class MovieAPI {
     url = _addArgumentToUrl(url, 'endYear', endYear);
     url = _addArgumentToUrl(url, 'titleType', titleType);
     url = _addArgumentToUrl(url, 'limit', limit);
+    url = _addArgumentToUrl(url, 'info', info);
 
     final response = await http.get(
       Uri.parse(url),
@@ -45,14 +51,38 @@ class MovieAPI {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body) as Map<String, dynamic>;
+      final int pageNumber = int.parse(data['page'].toString());
       final titlesList = data['results'] as List<dynamic>;
 
-      final List<Title> titles =
-          titlesList.map((item) => Title.fromJson(item)).toList();
+      final List<Title> titles = titlesList.map((item) {
+        final itemPageNumber = pageNumber;
+        return Title.fromJson(item, pageNumber: itemPageNumber);
+      }).toList();
 
       return titles;
     } else {
       throw Exception('Failed to fetch titles');
+    }
+  }
+
+  Future<Title> fetchTitleById({
+    required String id,
+    String info = 'base_info',
+  }) async {
+    String url = '$baseUrl/titles/$id';
+
+    url = _addArgumentToUrl(url, 'info', info);
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      return Title.fromJson(data);
+    } else {
+      throw Exception('Failed to fetch title by ID');
     }
   }
 }
