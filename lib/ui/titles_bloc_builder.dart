@@ -1,3 +1,4 @@
+import 'package:film_explorer/bloc/title_event.dart';
 import 'package:film_explorer/ui/title_card/title_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,15 +19,23 @@ class TitlesBlocBuilder extends StatelessWidget {
             slivers: [
               SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, 
+                  crossAxisCount: 2,
                   mainAxisSpacing: 10.0,
                   crossAxisSpacing: 10.0,
-                  childAspectRatio: 0.6, 
+                  childAspectRatio: 0.65,
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     final title = state.titles[index];
-                    return TitleCard(title: title);
+                    return TitleCard(
+                      title: title,
+                      onTap: () {
+                        context.read<TitleBloc>().add(ShowDetailsEvent(
+                              titleId: title.id,
+                              titlePageNumber: title.pageNumber,
+                            ));
+                      },
+                    );
                   },
                   childCount: state.titles.length,
                 ),
