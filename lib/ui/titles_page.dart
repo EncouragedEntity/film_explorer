@@ -27,7 +27,7 @@ class _TitlesScreenState extends State<TitlesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Film explorer'),
+        title: const Text('Movie explorer'),
       ),
       body: Column(
         children: [
@@ -59,7 +59,7 @@ class _TitlesScreenState extends State<TitlesScreen> {
                         }
                         context
                             .read<TitleBloc>()
-                            .add(PreviousPageEvent(currentPageNum));
+                            .add(GotoPageEvent(currentPageNum));
                       },
                       icon: const Icon(Icons.chevron_left),
                     ),
@@ -91,6 +91,7 @@ class _TitlesScreenState extends State<TitlesScreen> {
                         maxLength: 2,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
+                          hintText: '1-50',
                           counterText: '',
                         ),
                       ),
@@ -111,7 +112,7 @@ class _TitlesScreenState extends State<TitlesScreen> {
                         }
                         context
                             .read<TitleBloc>()
-                            .add(NextPageEvent(currentPageNum));
+                            .add(GotoPageEvent(currentPageNum));
                       },
                       icon: const Icon(Icons.chevron_right),
                     )
