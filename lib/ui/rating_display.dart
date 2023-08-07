@@ -8,14 +8,14 @@ class RatingDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double normalizedRating = rating / 10.0 * 5.0;
     return RatingBar(
-      initialRating: normalizedRating,
+      itemSize: 25.0,
+      initialRating: rating,
       direction: Axis.horizontal,
       allowHalfRating: true,
       minRating: 0,
       maxRating: 10,
-      itemCount: 5,
+      itemCount: 10,
       ignoreGestures: true,
       ratingWidget: RatingWidget(
         full: const Icon(
