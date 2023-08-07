@@ -1,3 +1,7 @@
+import 'writer.dart';
+import 'cast_member.dart';
+import 'director.dart';
+
 class Title {
   final String id;
   int pageNumber;
@@ -21,11 +25,11 @@ class Title {
   final dynamic primaryImage;
   final Map<String, dynamic> imageUploadLink;
   final bool canHaveEpisodes;
-  final Map<String, dynamic> cast;
-  final List<dynamic> principalCast;
-  final List<dynamic> creators;
-  final List<dynamic> directors;
-  final List<dynamic> writers;
+  List<CastMember> cast;
+  Map<String, dynamic> principalCast;
+  List<dynamic> creators;
+  List<Director> directors;
+  List<Writer> writers;
   final bool isAdult;
   final Map<String, dynamic> moreLikeThisTitles;
   final Map<String, dynamic> summaries;
@@ -171,8 +175,41 @@ class Title {
     required this.directorsPageTitle,
   });
 
+  void updateWithDirectorAndWriterInfo(Map<String, dynamic> results) {
+    directors = (results['results']['directors'] as List<dynamic>)
+        .map<Director>((directorNode) {
+      for (var director in directorNode['credits']) {
+        return Director.fromJson(director);
+      }
+      return Director(id: '', name: '');
+    }).toList();
+
+    writers = (results['results']['writers'] as List<dynamic>)
+        .map<Writer>((writerNode) {
+      for (var writer in writerNode['credits']) {
+        return Writer.fromJson(writer);
+      }
+      return Writer(id: '', name: '');
+    }).toList();
+  }
+
+  void updateWithCastInfo(Map<String, dynamic> results) {
+    cast = (results['results']['cast']['edges'] as List<dynamic>)
+        .map<CastMember>((castNode) {
+      final castData = castNode['node'] as Map<String, dynamic>;
+      return CastMember.fromJson(castData);
+    })
+    .toList();
+  }
+
   factory Title.fromJson(Map<String, dynamic> json, {int? pageNumber}) {
     final results = json['results'] as Map<String, dynamic>?;
+
+    List<Director> directors = [];
+
+    List<Writer> writers = [];
+
+    List<CastMember> cast = [];
 
     if (results != null) {
       final primaryImage = results['primaryImage'] as Map<String, dynamic>?;
@@ -200,11 +237,11 @@ class Title {
         primaryImage: results['primaryImage'],
         imageUploadLink: results['imageUploadLink'] ?? {},
         canHaveEpisodes: results['canHaveEpisodes'] ?? false,
-        cast: results['cast'] ?? {},
-        principalCast: results['principalCast'] ?? [],
+        cast: cast,
+        directors: directors,
+        writers: writers,
+        principalCast: results['principalCast'] ?? {},
         creators: results['creators'] ?? [],
-        directors: results['directors'] ?? [],
-        writers: results['writers'] ?? [],
         isAdult: results['isAdult'] ?? false,
         moreLikeThisTitles: results['moreLikeThisTitles'] ?? {},
         summaries: results['summaries'] ?? {},
@@ -287,11 +324,11 @@ class Title {
         primaryImage: json['primaryImage'],
         imageUploadLink: json['imageUploadLink'] ?? {},
         canHaveEpisodes: json['canHaveEpisodes'] ?? false,
-        cast: json['cast'] ?? {},
-        principalCast: json['principalCast'] ?? [],
+        cast: cast,
+        principalCast: json['principalCast'] ?? {},
         creators: json['creators'] ?? [],
-        directors: json['directors'] ?? [],
-        writers: json['writers'] ?? [],
+        directors: directors,
+        writers: writers,
         isAdult: json['isAdult'] ?? false,
         moreLikeThisTitles: json['moreLikeThisTitles'] ?? {},
         summaries: json['summaries'] ?? {},
