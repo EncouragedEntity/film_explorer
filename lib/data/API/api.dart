@@ -70,7 +70,6 @@ class MovieAPI {
     String info = 'base_info',
   }) async {
     String url = '$baseUrl/titles/$id';
-
     url = _addArgumentToUrl(url, 'info', info);
 
     final response = await http.get(
@@ -80,9 +79,39 @@ class MovieAPI {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body) as Map<String, dynamic>;
-      return Title.fromJson(data);
+      Title title = Title.fromJson(data);
+
+      final directorsWritersData = await fetchAdditionalData(
+        id,
+        'creators_directors_writers',
+      );
+
+      title.updateWithDirectorAndWriterInfo(directorsWritersData);
+
+      final castData = await fetchAdditionalData(id, 'extendedCast');
+      title.updateWithCastInfo(castData);
+
+      return title;
     } else {
       throw Exception('Failed to fetch title by ID');
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchAdditionalData(
+      String id, String info) async {
+    String url = '$baseUrl/titles/$id';
+    url = _addArgumentToUrl(url, 'info', info);
+
+    final response = await http.get(
+      Uri.parse(url),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      return data;
+    } else {
+      throw Exception('Failed to fetch additional data for title');
     }
   }
 }
