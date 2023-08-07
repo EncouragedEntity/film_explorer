@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../../data/constants/links.dart';
+
 class CardPoster extends StatelessWidget {
   const CardPoster({required this.imageUrl, super.key});
 
@@ -14,7 +16,7 @@ class CardPoster extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: CachedNetworkImage(
-          imageUrl: imageUrl ?? 'https://placehold.co/200.png?text=No+image+provided',
+          imageUrl: imageUrl ?? noImageLink,
           fit: imageUrl != null ? BoxFit.contain : BoxFit.fitHeight,
           placeholder: (context, url) => const SizedBox(
             width: 40,  
