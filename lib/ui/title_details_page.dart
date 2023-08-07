@@ -80,7 +80,8 @@ class _TitleDetailsScreenState extends State<TitleDetailsScreen> {
                     if (title.runtime != null)
                       Text(title.runtime['displayableProperty']['value']
                           ['plainText']),
-                    Text(title.plot['plotText']['plainText']),
+                    if (title.plot != null)
+                      Text(title.plot['plotText']['plainText']),
                     if (title.directors.isNotEmpty)
                       DividedTab(
                         alignment: Alignment.centerLeft,
