@@ -1,11 +1,13 @@
-import 'package:film_explorer/ui/titles_page.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/title_bloc.dart';
-import '../bloc/title_event.dart';
-import '../bloc/title_state.dart';
+import '../../bloc/title/title_bloc.dart';
+import '../../bloc/title/title_event.dart';
+import '../../bloc/title/title_state.dart';
 import 'loading_page.dart';
 import 'title_details_page.dart';
+import 'titles_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,7 +34,23 @@ class _HomePageState extends State<HomePage> {
           );
         }
         if (state is TitleErrorFetchDataState) {
-          return Text(state.errorMessage); //TODO adequate error display
+          showDialog(
+            context: context,
+            builder: (BuildContext dialogContext) {
+              return AlertDialog(
+                title: const Text('Error'),
+                content: Text(state.errorMessage),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      exit(0);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
         }
         return const LoadingScreen();
       },
