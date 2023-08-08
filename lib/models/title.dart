@@ -1,196 +1,205 @@
+import 'package:url_launcher/url_launcher.dart';
+
+import '../constants/links.dart';
 import 'writer.dart';
 import 'cast_member.dart';
 import 'director.dart';
 
 class Title {
   final String id;
-  int pageNumber;
-  final String? primaryImageURL;
-  final String titleType;
-  final String titleText;
-  final String originalTitleText;
-  final int releaseYear;
-  final int? releaseDateDay;
-  final int? releaseDateMonth;
-  final int? releaseDateYear;
-  final Map<String, dynamic> wins;
-  final Map<String, dynamic> nominations;
-  final dynamic prestigiousAwardSummary;
-  final Map<String, dynamic> ratingsSummary;
-  final dynamic episodes;
-  final Map<String, dynamic> videos;
-  final Map<String, dynamic> videoStrip;
-  final Map<String, dynamic> titleMainImages;
-  final dynamic productionStatus;
-  final dynamic primaryImage;
-  final Map<String, dynamic> imageUploadLink;
-  final bool canHaveEpisodes;
-  List<CastMember> cast;
-  Map<String, dynamic> principalCast;
-  List<dynamic> creators;
-  List<Director> directors;
-  List<Writer> writers;
-  final bool isAdult;
-  final Map<String, dynamic> moreLikeThisTitles;
-  final Map<String, dynamic> summaries;
-  final Map<String, dynamic> outlines;
-  final Map<String, dynamic> synopses;
-  final Map<String, dynamic> storylineKeywords;
-  final Map<String, dynamic> taglines;
-  final Map<String, dynamic> genres;
-  final dynamic certificate;
-  final Map<String, dynamic> parentsGuide;
-  final Map<String, dynamic> triviaTotal;
-  final Map<String, dynamic> trivia;
-  final Map<String, dynamic> goofsTotal;
-  final Map<String, dynamic> goofs;
-  final Map<String, dynamic> quotesTotal;
-  final Map<String, dynamic> quotes;
-  final Map<String, dynamic> crazyCredits;
-  final Map<String, dynamic> alternateVersions;
-  final Map<String, dynamic> connections;
-  final Map<String, dynamic> soundtrack;
-  final Map<String, dynamic> reviews;
-  final Map<String, dynamic> featuredReviews;
-  final Map<String, dynamic> canRate;
-  final Map<String, dynamic> iframeAddReviewLink;
-  final Map<String, dynamic> faqsTotal;
-  final Map<String, dynamic> faqs;
-  final dynamic releaseDate;
-  final Map<String, dynamic> countriesOfOrigin;
-  final Map<String, dynamic> detailsExternalLinks;
-  final Map<String, dynamic> spokenLanguages;
-  final Map<String, dynamic> akas;
-  final Map<String, dynamic> filmingLocations;
-  final Map<String, dynamic> production;
-  final dynamic productionBudget;
-  final dynamic lifetimeGross;
-  final dynamic openingWeekendGross;
-  final dynamic worldwideGross;
-  final Map<String, dynamic> technicalSpecifications;
-  final dynamic runtime;
-  final dynamic series;
-  final Map<String, dynamic> news;
-  final Map<String, dynamic> contributionQuestions;
-  final dynamic meterRanking;
-  final Map<String, dynamic> images;
-  final Map<String, dynamic> primaryVideos;
-  final Map<String, dynamic> externalLinks;
-  final dynamic metacritic;
-  final Map<String, dynamic> keywords;
-  final dynamic plot;
-  final Map<String, dynamic> plotContributionLink;
-  final Map<String, dynamic> credits;
-  final List<dynamic> principalCredits;
-  final Map<String, dynamic> criticReviewsTotal;
-  final Map<String, dynamic> meta;
-  final Map<String, dynamic> castPageTitle;
-  final Map<String, dynamic> creatorsPageTitle;
-  final Map<String, dynamic> directorsPageTitle;
+  int pageNumber = 1;
+  String? primaryImageURL;
+  String titleType = '';
+  String titleText = '';
+  String originalTitleText = '';
+  int releaseYear = 0;
+  int? releaseDateDay;
+  int? releaseDateMonth;
+  int? releaseDateYear;
+  Map<String, dynamic> wins = {};
+  Map<String, dynamic> nominations = {};
+  dynamic prestigiousAwardSummary;
+  Map<String, dynamic> ratingsSummary = {};
+  dynamic episodes;
+  Map<String, dynamic> videos = {};
+  Map<String, dynamic> videoStrip = {};
+  Map<String, dynamic> titleMainImages = {};
+  dynamic productionStatus;
+  dynamic primaryImage;
+  Map<String, dynamic> imageUploadLink = {};
+  bool canHaveEpisodes = false;
+  List<CastMember> cast = [];
+  Map<String, dynamic> principalCast = {};
+  List<dynamic> creators = [];
+  List<Director> directors = [];
+  List<Writer> writers = [];
+  bool isAdult = false;
+  Map<String, dynamic> moreLikeThisTitles = {};
+  Map<String, dynamic> summaries = {};
+  Map<String, dynamic> outlines = {};
+  Map<String, dynamic> synopses = {};
+  Map<String, dynamic> storylineKeywords = {};
+  Map<String, dynamic> taglines = {};
+  Map<String, dynamic> genres = {};
+  dynamic certificate;
+  Map<String, dynamic> parentsGuide = {};
+  Map<String, dynamic> triviaTotal = {};
+  Map<String, dynamic> trivia = {};
+  Map<String, dynamic> goofsTotal = {};
+  Map<String, dynamic> goofs = {};
+  Map<String, dynamic> quotesTotal = {};
+  Map<String, dynamic> quotes = {};
+  Map<String, dynamic> crazyCredits = {};
+  Map<String, dynamic> alternateVersions = {};
+  Map<String, dynamic> connections = {};
+  Map<String, dynamic> soundtrack = {};
+  Map<String, dynamic> reviews = {};
+  Map<String, dynamic> featuredReviews = {};
+  Map<String, dynamic> canRate = {};
+  Map<String, dynamic> iframeAddReviewLink = {};
+  Map<String, dynamic> faqsTotal = {};
+  Map<String, dynamic> faqs = {};
+  dynamic releaseDate;
+  Map<String, dynamic> countriesOfOrigin = {};
+  Map<String, dynamic> detailsExternalLinks = {};
+  Map<String, dynamic> spokenLanguages = {};
+  Map<String, dynamic> akas = {};
+  Map<String, dynamic> filmingLocations = {};
+  Map<String, dynamic> production = {};
+  dynamic productionBudget;
+  dynamic lifetimeGross;
+  dynamic openingWeekendGross;
+  dynamic worldwideGross;
+  Map<String, dynamic> technicalSpecifications = {};
+  dynamic runtime;
+  dynamic series;
+  Map<String, dynamic> news = {};
+  Map<String, dynamic> contributionQuestions = {};
+  dynamic meterRanking;
+  Map<String, dynamic> images = {};
+  Map<String, dynamic> primaryVideos = {};
+  Map<String, dynamic> externalLinks = {};
+  dynamic metacritic;
+  Map<String, dynamic> keywords = {};
+  dynamic plot;
+  Map<String, dynamic> plotContributionLink = {};
+  Map<String, dynamic> credits = {};
+  List<dynamic> principalCredits = [];
+  Map<String, dynamic> criticReviewsTotal = {};
+  Map<String, dynamic> meta = {};
+  Map<String, dynamic> castPageTitle = {};
+  Map<String, dynamic> creatorsPageTitle = {};
+  Map<String, dynamic> directorsPageTitle = {};
 
   Title({
-    required this.pageNumber,
     required this.id,
-    required this.primaryImageURL,
-    required this.titleType,
-    required this.titleText,
-    required this.originalTitleText,
-    required this.releaseYear,
+    this.pageNumber = 1,
+    this.primaryImageURL,
+    this.titleType = '',
+    this.titleText = '',
+    this.originalTitleText = '',
+    this.releaseYear = 0,
     this.releaseDateDay,
     this.releaseDateMonth,
     this.releaseDateYear,
-    required this.wins,
-    required this.nominations,
-    required this.prestigiousAwardSummary,
-    required this.ratingsSummary,
-    required this.episodes,
-    required this.videos,
-    required this.videoStrip,
-    required this.titleMainImages,
-    required this.productionStatus,
-    required this.primaryImage,
-    required this.imageUploadLink,
-    required this.canHaveEpisodes,
-    required this.cast,
-    required this.principalCast,
-    required this.creators,
-    required this.directors,
-    required this.writers,
-    required this.isAdult,
-    required this.moreLikeThisTitles,
-    required this.summaries,
-    required this.outlines,
-    required this.synopses,
-    required this.storylineKeywords,
-    required this.taglines,
-    required this.genres,
-    required this.certificate,
-    required this.parentsGuide,
-    required this.triviaTotal,
-    required this.trivia,
-    required this.goofsTotal,
-    required this.goofs,
-    required this.quotesTotal,
-    required this.quotes,
-    required this.crazyCredits,
-    required this.alternateVersions,
-    required this.connections,
-    required this.soundtrack,
-    required this.reviews,
-    required this.featuredReviews,
-    required this.canRate,
-    required this.iframeAddReviewLink,
-    required this.faqsTotal,
-    required this.faqs,
-    required this.releaseDate,
-    required this.countriesOfOrigin,
-    required this.detailsExternalLinks,
-    required this.spokenLanguages,
-    required this.akas,
-    required this.filmingLocations,
-    required this.production,
-    required this.productionBudget,
-    required this.lifetimeGross,
-    required this.openingWeekendGross,
-    required this.worldwideGross,
-    required this.technicalSpecifications,
-    required this.runtime,
-    required this.series,
-    required this.news,
-    required this.contributionQuestions,
-    required this.meterRanking,
-    required this.images,
-    required this.primaryVideos,
-    required this.externalLinks,
-    required this.metacritic,
-    required this.keywords,
-    required this.plot,
-    required this.plotContributionLink,
-    required this.credits,
-    required this.principalCredits,
-    required this.criticReviewsTotal,
-    required this.meta,
-    required this.castPageTitle,
-    required this.creatorsPageTitle,
-    required this.directorsPageTitle,
+    this.wins = const {},
+    this.nominations = const {},
+    this.prestigiousAwardSummary,
+    this.ratingsSummary = const {},
+    this.episodes,
+    this.videos = const {},
+    this.videoStrip = const {},
+    this.titleMainImages = const {},
+    this.productionStatus,
+    this.primaryImage,
+    this.imageUploadLink = const {},
+    this.canHaveEpisodes = false,
+    this.cast = const [],
+    this.principalCast = const {},
+    this.creators = const [],
+    this.directors = const [],
+    this.writers = const [],
+    this.isAdult = false,
+    this.moreLikeThisTitles = const {},
+    this.summaries = const {},
+    this.outlines = const {},
+    this.synopses = const {},
+    this.storylineKeywords = const {},
+    this.taglines = const {},
+    this.genres = const {},
+    this.certificate,
+    this.parentsGuide = const {},
+    this.triviaTotal = const {},
+    this.trivia = const {},
+    this.goofsTotal = const {},
+    this.goofs = const {},
+    this.quotesTotal = const {},
+    this.quotes = const {},
+    this.crazyCredits = const {},
+    this.alternateVersions = const {},
+    this.connections = const {},
+    this.soundtrack = const {},
+    this.reviews = const {},
+    this.featuredReviews = const {},
+    this.canRate = const {},
+    this.iframeAddReviewLink = const {},
+    this.faqsTotal = const {},
+    this.faqs = const {},
+    this.releaseDate,
+    this.countriesOfOrigin = const {},
+    this.detailsExternalLinks = const {},
+    this.spokenLanguages = const {},
+    this.akas = const {},
+    this.filmingLocations = const {},
+    this.production = const {},
+    this.productionBudget,
+    this.lifetimeGross,
+    this.openingWeekendGross,
+    this.worldwideGross,
+    this.technicalSpecifications = const {},
+    this.runtime,
+    this.series,
+    this.news = const {},
+    this.contributionQuestions = const {},
+    this.meterRanking,
+    this.images = const {},
+    this.primaryVideos = const {},
+    this.externalLinks = const {},
+    this.metacritic,
+    this.keywords = const {},
+    this.plot,
+    this.plotContributionLink = const {},
+    this.credits = const {},
+    this.principalCredits = const [],
+    this.criticReviewsTotal = const {},
+    this.meta = const {},
+    this.castPageTitle = const {},
+    this.creatorsPageTitle = const {},
+    this.directorsPageTitle = const {},
   });
 
   void updateWithDirectorAndWriterInfo(Map<String, dynamic> results) {
-    directors = (results['results']['directors'] as List<dynamic>)
-        .map<Director>((directorNode) {
-      for (var director in directorNode['credits']) {
-        return Director.fromJson(director);
-      }
-      return Director(id: '', name: '');
-    }).toList();
-
-    writers = (results['results']['writers'] as List<dynamic>)
-        .map<Writer>((writerNode) {
-      for (var writer in writerNode['credits']) {
-        return Writer.fromJson(writer);
-      }
-      return Writer(id: '', name: '');
-    }).toList();
+    try {
+      directors =
+          (results['results']['directors'][0]['credits'] as List<dynamic>)
+              .map<Director>((creditNode) {
+        return Director(
+            id: creditNode['name']['id'],
+            name: creditNode['name']['nameText']['text']);
+      }).toList();
+    } catch (error) {
+      directors = [];
+    }
+    try {
+      writers = (results['results']['writers'][0]['credits'] as List<dynamic>)
+          .map<Writer>((creditNode) {
+        return Writer(
+            id: creditNode['name']['id'],
+            name: creditNode['name']['nameText']['text']);
+      }).toList();
+    } catch (error) {
+      writers = [];
+    }
   }
 
   void updateWithCastInfo(Map<String, dynamic> results) {
@@ -198,8 +207,15 @@ class Title {
         .map<CastMember>((castNode) {
       final castData = castNode['node'] as Map<String, dynamic>;
       return CastMember.fromJson(castData);
-    })
-    .toList();
+    }).toList();
+  }
+  
+    Future<void> openInBrowser() async
+  {
+    if(!await launchUrl(Uri.parse('$imdbTitle/$id')))
+    {
+      throw Exception('Could not find url');
+    }
   }
 
   factory Title.fromJson(Map<String, dynamic> json, {int? pageNumber}) {
