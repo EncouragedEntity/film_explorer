@@ -1,17 +1,27 @@
-import 'package:film_explorer/data/constants/links.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../constants/links.dart';
 
 class CastMember {
   final String id;
   final String name;
-  final String? imageUrl;
+  final String imageUrl;
   final List<String>? characterNames;
 
   CastMember({
     required this.id,
     required this.name,
-    this.imageUrl,
+    this.imageUrl = noImageLink,
     this.characterNames,
   });
+
+  Future<void> openInBrowser() async
+  {
+    if(!await launchUrl(Uri.parse('$imdbName/$id')))
+    {
+      throw Exception('Could not find url');
+    }
+  }
 
   factory CastMember.fromJson(Map<String, dynamic> json) {
     final nameNode = json['name'];
