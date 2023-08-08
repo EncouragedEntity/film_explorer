@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:film_explorer/data/API/api.dart';
+import '../../services/API/movie_api.dart';
 import 'title_event.dart';
 import 'title_state.dart';
 

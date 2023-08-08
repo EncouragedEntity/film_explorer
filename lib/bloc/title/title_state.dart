@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../models/title.dart';
+import '../../models/title.dart';
 
 abstract class TitleState extends Equatable
 {
