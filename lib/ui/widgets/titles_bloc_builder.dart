@@ -1,11 +1,13 @@
-import 'package:film_explorer/bloc/title_event.dart';
-import 'package:film_explorer/ui/title_card/title_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/title_bloc.dart';
-import '../bloc/title_state.dart';
-import 'loading_page.dart';
+import '../../bloc/title/title_bloc.dart';
+import '../../bloc/title/title_event.dart';
+import '../../bloc/title/title_state.dart';
+import '../pages/loading_page.dart';
+import 'title_card/title_card.dart';
+
+
 
 class TitlesBlocBuilder extends StatelessWidget {
   const TitlesBlocBuilder({super.key});
